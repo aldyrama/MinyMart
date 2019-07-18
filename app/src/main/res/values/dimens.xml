@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Margin-->
+    <dimen name="margin_mini">2dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_half_medium">6dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_big">32dp</dimen>
+    <dimen name="margin_huge">40dp</dimen>
+    <dimen name="margin_massive">56dp</dimen>
+    <dimen name="margin_very_massive">68dp</dimen>
+
+    <!--Text Size-->
+    <dimen name="text_size_mini">8sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_semi_large">20sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_huge">28sp</dimen>
+    <dimen name="text_size_massive">36sp</dimen>
+
+</resources>

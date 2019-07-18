@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/margin_large"
+    android:layout_marginTop="@dimen/margin_medium"
+    android:layout_marginEnd="@dimen/margin_large"
+    android:layout_marginBottom="@dimen/margin_medium">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        app:cardBackgroundColor="@color/light_grey"
+        app:cardCornerRadius="@dimen/margin_small"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_image" />
+    </android.support.v7.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/txt_product_name"
+        style="@style/h2"
+        android:layout_width="0dp"
+        android:maxLines="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/cardView3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Product " />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Qty :"
+        android:textStyle="bold"
+        app:layout_constraintWidth_percent=".1"
+        app:layout_constraintEnd_toStartOf="@+id/qty_total"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/cardView3"
+        app:layout_constraintTop_toTopOf="@+id/qty_total" />
+
+    <TextView
+        android:id="@+id/qty_total"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintWidth_percent=".17"
+        android:layout_marginEnd="8dp"
+        android:text="2"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/txt_price" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Rp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price"
+        app:layout_constraintWidth_percent=".1" />
+
+    <TextView
+        android:id="@+id/txt_price"
+        style="@style/h3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:maxLines="3"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_product_name"
+        app:layout_constraintWidth_percent=".25"
+        tools:text="5.000.000" />
+
+</android.support.constraint.ConstraintLayout>
