@@ -1,10 +1,8 @@
 package com.example.minymart.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +15,7 @@ import com.example.minymart.Base.BaseActivity;
 import com.example.minymart.R;
 import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
-import com.example.minymart.model.SharedPrefManager;
+import com.example.minymart.utils.SharedPrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +93,7 @@ public class SignUpActivity extends BaseActivity {
                 TextUtils.isEmpty(gender) && TextUtils.isEmpty(height) && TextUtils.isEmpty(weight)){
 
             alertDialogEmpty();
+            hideLoading();
         }
         else {
             mApiService.createUser(fName, lName, email, password, birthdate, gender, height, weight).enqueue(new Callback<ResponseBody>() {
@@ -110,6 +109,7 @@ public class SignUpActivity extends BaseActivity {
                                 String token = jsonRESULTS.getString("access_token");
                                 Log.d("respons", "message" + token);
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, true);
+                                sharedPrefManager.getToken(SharedPrefManager.TOKEN, token);
                                 Toast.makeText(SignUpActivity.this, "BERHASIL REGISTRASI", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
                             }

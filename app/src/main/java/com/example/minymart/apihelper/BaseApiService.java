@@ -1,7 +1,5 @@
 package com.example.minymart.apihelper;
 
-import android.support.v7.widget.CardView;
-
 import com.example.minymart.model.Cart;
 import com.example.minymart.model.respons.ResponsBanner;
 import com.example.minymart.model.respons.ResponsCart;
@@ -43,6 +41,9 @@ public interface BaseApiService {
 
     @GET("purchase/checkout")
     Call<ResponsCart> getCart(@Header("Authorization") String tokenBearer);
+
+    @GET("purchase/payment")
+    Call<ResponsCart> getPay(@Header("Authorization") String tokenBearer);
 
     @GET("profile")
     Call<ResponsUser> getProfile(@Header("Authorization") String tokenBearer);

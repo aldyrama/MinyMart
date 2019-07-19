@@ -2,7 +2,7 @@ package com.example.minymart.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -67,7 +67,7 @@ public class DetailProductActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.btn_update_cart :
-                toCart();
+                startActivity(new Intent(DetailProductActivity.this, CartActivity.class));
             case R.id.shop :
                 startActivity(new Intent(DetailProductActivity.this, CartActivity.class));
                 break;

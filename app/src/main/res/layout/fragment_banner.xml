@@ -1,22 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.BannerFragment">
 
-   <ss.com.bannerslider.Slider
-       android:id="@+id/banner_slider"
-       android:layout_width="match_parent"
+   <ProgressBar
+       android:id="@+id/pb"
+       android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       app:slider_animateIndicators="true"
-       app:slider_emptyView="@layout/empty_view"
-       app:slider_indicatorSize="10dp"
-       app:slider_interval="5000"
-       app:slider_loopSlides="true"
-       app:slider_selectedSlideIndicator="@drawable/indicator_circle_selected"
-       app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected" />
+       android:indeterminateTint="@color/colorPrimary"
+       android:layout_centerInParent="true"/>
+
+   <com.smarteist.autoimageslider.SliderView
+       android:id="@+id/imageSlider"
+       android:layout_width="match_parent"
+       android:layout_height="250dp"
+       app:sliderAnimationDuration="600"
+       app:sliderAutoCycleDirection="back_and_forth"
+       app:sliderAutoCycleEnabled="false"
+       app:sliderCircularHandlerEnabled="true"
+       app:sliderIndicatorAnimationDuration="650"
+       app:sliderIndicatorGravity="center_horizontal|bottom"
+       app:sliderIndicatorMargin="15dp"
+       app:sliderIndicatorOrientation="horizontal"
+       app:sliderIndicatorPadding="3dp"
+       app:sliderIndicatorRadius="2dp"
+       app:sliderIndicatorSelectedColor="#5A5A5A"
+       app:sliderIndicatorUnselectedColor="#FFF"
+       app:sliderScrollTimeInSec="1"
+       app:sliderStartAutoCycle="true" />
 
 
-</FrameLayout>
+</RelativeLayout>

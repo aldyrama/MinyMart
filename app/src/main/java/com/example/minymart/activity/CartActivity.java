@@ -1,11 +1,16 @@
 package com.example.minymart.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.minymart.Base.BaseActivity;
@@ -15,9 +20,7 @@ import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
 import com.example.minymart.model.Cart;
 import com.example.minymart.model.respons.ResponsCart;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.minymart.utils.SharedPrefManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +34,14 @@ public class CartActivity extends BaseActivity {
 
     @BindView(R.id.recyclerview_cart)
     RecyclerView mRecyclerView;
+    @BindView(R.id.txt_total)
+    TextView mTotal;
     List<Cart> mCart;
     BaseApiService mApiService;
     LinearLayoutManager layoutManager;
     CartAdapter mAdapter;
+    String token;
+    SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +49,14 @@ public class CartActivity extends BaseActivity {
         setContentView(R.layout.activity_cart);
 
         attachView(this);
+        sharedPrefManager = new SharedPrefManager(this);
+        token = sharedPrefManager.setToken();
         showLoading();
         initView();
         loadCart();
     }
 
+    @SuppressLint("WrongConstant")
     private void initView() {
         mApiService = UtilsApi.getApiService();
         mRecyclerView.setHasFixedSize(true);
@@ -59,20 +69,41 @@ public class CartActivity extends BaseActivity {
     }
 
     public void loadCart() {
-        Call<ResponsCart> cartCall = mApiService.getCart("eyJ0eXAi...");
+        Call<ResponsCart> cartCall = mApiService.getCart(token);
         cartCall.enqueue(new Callback<ResponsCart>() {
 
             @Override
             public void onResponse(Call<ResponsCart> call, Response<ResponsCart> response) {
-                Log.d("cart", "onResponse" + response.body().getCarts().size());
+                Log.d("cartdata", "onResponse" + response.body().getCarts().getProducts().size());
+                mCart.clear();
+                mCart.addAll(response.body().getCarts().getProducts());
+                mAdapter.notifyDataSetChanged();
+                int total = response.body().getCarts().getTotal_price();
+                mTotal.setText(String.valueOf(total));
+                hideLoading();
 
             }
 
             @Override
             public void onFailure(Call<ResponsCart> call, Throwable t) {
-                Toast.makeText(CartActivity.this, "error", Toast.LENGTH_SHORT).show();
+                Log.d("error", "message" + t.getMessage());
+//                Toast.makeText(CartActivity.this, "error", Toast.LENGTH_SHORT).show();
 
             }
         });
+    }
+
+    public void onClickView(View view){
+        switch (view.getId()){
+            case R.id.btn_checkout :
+                startActivity(new Intent(CartActivity.this, ConfirmationActivity.class));
+                break;
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

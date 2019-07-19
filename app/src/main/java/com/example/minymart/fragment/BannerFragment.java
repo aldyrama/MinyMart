@@ -1,56 +1,69 @@
 package com.example.minymart.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import androidx.annotation.Nullable;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
+import com.example.minymart.Base.BaseFragment;
 import com.example.minymart.R;
-import com.example.minymart.adapter.PicassoImageLoadingService;
-import com.example.minymart.adapter.SliderAdpter;
+import com.example.minymart.adapter.SliderAdapter;
 import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
 import com.example.minymart.model.Banner;
 import com.example.minymart.model.respons.ResponsBanner;
+import com.smarteist.autoimageslider.IndicatorAnimations;
+import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ss.com.bannerslider.Slider;
 
-public class BannerFragment extends Fragment {
+public class BannerFragment extends BaseFragment {
 
-    private Slider slider;
+    private SliderView mSlider;
     BaseApiService mApiService;
     List<Banner> mBanner;
+    SliderAdapter mSliderAdpter;
+    View view;
+    ProgressBar mPb;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_banner, container, false);
-        Slider.init(new PicassoImageLoadingService(getContext()));
+        view = inflater.inflate(R.layout.fragment_banner, container, false);
 
+        attachView(view);
         mApiService = UtilsApi.getApiService();
-        slider = view.findViewById(R.id.banner_slider);
+        mBanner = new ArrayList<>();
+        mSlider = view.findViewById(R.id.imageSlider);
+        mPb = view.findViewById(R.id.pb);
+        mPb.setVisibility(View.VISIBLE);
         loadBanner();
-        slider.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                slider.setAdapter(new SliderAdpter());
-                slider.setSelectedSlide(0);
-            }
-        }, 1500);
+        mSliderAdpter = new SliderAdapter(getContext(), mBanner);
+        mSlider.setSliderAdapter(mSliderAdpter);
+        mSlider.setIndicatorAnimation(IndicatorAnimations.SLIDE);
+        mSlider.setSliderTransformAnimation(SliderAnimations.CUBEINROTATIONTRANSFORMATION);
+        mSlider.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+        mSlider.setIndicatorSelectedColor(Color.WHITE);
+        mSlider.setIndicatorUnselectedColor(Color.GRAY);
+        mSlider.startAutoCycle();
 
-        slider.setOnClickListener(new View.OnClickListener() {
+        mSlider.setOnIndicatorClickListener(new DrawController.ClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onIndicatorClicked(int position) {
+                mSlider.setCurrentPagePosition(position);
             }
         });
 
@@ -64,6 +77,11 @@ public class BannerFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponsBanner> call, Response<ResponsBanner> response) {
                 Log.d("banner", "respons " + response.body().getBanners().size());
+                mBanner.clear();
+                mBanner.addAll(response.body().getBanners());
+                mSliderAdpter.notifyDataSetChanged();
+                mPb.setVisibility(View.GONE);
+
             }
 
             @Override

@@ -1,8 +1,8 @@
 package com.example.minymart.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import com.example.minymart.R;
 import com.example.minymart.activity.CartActivity;
+import com.example.minymart.activity.ConfirmationActivity;
 import com.example.minymart.model.Cart;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,6 +23,11 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
     public CartAdapter(CartActivity cartActivity, List<Cart> cart) {
         mContext = cartActivity;
+        mCart = cart;
+    }
+
+    public CartAdapter(ConfirmationActivity confirmationActivity, List<Cart> cart) {
+        mContext = confirmationActivity;
         mCart = cart;
     }
 
@@ -58,7 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
             super(itemView);
 
             mimage = itemView.findViewById(R.id.img_content);
-            mName = itemView.findViewById(R.id.txt_product_name);
+            mName = itemView.findViewById(R.id.txt_product_pay);
             mQty = itemView.findViewById(R.id.qty_total);
             mPrice = itemView.findViewById(R.id.txt_price);
 

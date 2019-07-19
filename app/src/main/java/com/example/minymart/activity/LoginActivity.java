@@ -1,18 +1,17 @@
 package com.example.minymart.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.minymart.Base.BaseActivity;
@@ -20,7 +19,7 @@ import com.example.minymart.R;
 import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
 import com.example.minymart.connection.ConnectivityReceiver;
-import com.example.minymart.model.SharedPrefManager;
+import com.example.minymart.utils.SharedPrefManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +27,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import butterknife.BindView;
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,7 +100,8 @@ public class LoginActivity extends BaseActivity implements ConnectivityReceiver.
                                 String token = jsonRESULTS.getString("access_token");
                                 Log.d("respons", "message" + token);
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, true);
-                                Toast.makeText(LoginActivity.this, "BERHASIL LOGIN", Toast.LENGTH_SHORT).show();
+                                sharedPrefManager.getToken(SharedPrefManager.TOKEN, token);
+                                Toast.makeText(LoginActivity.this, "BERHASIL LOGIN" , Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(LoginActivity.this, HomeActivity.class)
                                         .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                                 finish();

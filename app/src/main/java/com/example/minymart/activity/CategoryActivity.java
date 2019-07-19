@@ -1,23 +1,20 @@
 package com.example.minymart.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.minymart.Base.BaseActivity;
 import com.example.minymart.R;
 import com.example.minymart.adapter.CategoriesAdapter;
-import com.example.minymart.adapter.ItemOffsetDecoration;
 import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
 import com.example.minymart.model.Category;
@@ -119,6 +116,12 @@ public class CategoryActivity extends BaseActivity implements CategoriesAdapter.
 
     @Override
     public void onShowItemClick(int position) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
 
     }
 }

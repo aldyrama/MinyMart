@@ -1,17 +1,29 @@
 package com.example.minymart.Base;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
+
+import android.graphics.Color;
 import android.view.View;
 
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class BaseFragment extends Fragment {
 
     public Fragment fragment;
+    SweetAlertDialog loading;
 
     public void attachView(View view) {
 
         ButterKnife.bind(view);
 
+    }
+
+    public void showLoading(){
+        loading = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        loading.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        loading.setTitleText("Mohon tunggu");
+        loading.setCancelable(false);
+        loading.show();
     }
 }

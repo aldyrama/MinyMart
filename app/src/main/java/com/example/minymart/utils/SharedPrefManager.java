@@ -1,9 +1,11 @@
-package com.example.minymart.model;
+package com.example.minymart.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPrefManager {
+
+    public static final String TOKEN = "token";
 
     public static final String SP_USER_APP = "spUserApp";
 
@@ -32,6 +34,16 @@ public class SharedPrefManager {
     public void saveSPBoolean(String keySP, boolean value){
         spEditor.putBoolean(keySP, value);
         spEditor.commit();
+    }
+
+    public void getToken(String token, String value){
+        spEditor.putString(token, value);
+        spEditor.commit();
+    }
+
+    public String setToken(){
+        return sp.getString(TOKEN, "");
+
     }
 
     public String getSPNama(){

@@ -5,15 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.minymart.activity.CartActivity;
 import com.example.minymart.activity.CategoryActivity;
+import com.example.minymart.activity.ConfirmationActivity;
+import com.example.minymart.activity.DetailProductActivity;
 import com.example.minymart.activity.HomeActivity;
 import com.example.minymart.activity.LoginActivity;
 import com.example.minymart.activity.ProfileActivity;
 import com.example.minymart.activity.SignUpActivity;
-import com.example.minymart.model.SharedPrefManager;
+import com.example.minymart.activity.SuccsessActivity;
+import com.example.minymart.utils.SharedPrefManager;
 
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -23,11 +26,17 @@ public class BaseActivity extends AppCompatActivity {
     public Activity activity;
     SweetAlertDialog loading;
     SharedPrefManager sharedPrefManager;
+    String token;
 
     public void attachView(Activity activity) {
 
         ButterKnife.bind(activity);
 
+    }
+
+    public void token(){
+        sharedPrefManager = new SharedPrefManager(this);
+        token = sharedPrefManager.setToken();
     }
 
     public void showLoading(){
@@ -66,6 +75,7 @@ public class BaseActivity extends AppCompatActivity {
     }
     public void toHome(){
         startActivity(new Intent(BaseActivity.this, HomeActivity.class));
+        finish();
     }
     public void toProfile(){
         startActivity(new Intent(BaseActivity.this, ProfileActivity.class));
@@ -73,11 +83,12 @@ public class BaseActivity extends AppCompatActivity {
     public void toCart(){
         startActivity(new Intent(BaseActivity.this, CartActivity.class));
     }
-    public void logOut(){
-        sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, false);
-        startActivity(new Intent(BaseActivity.this, LoginActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-        finish();
+    public void toDetailProduct(){
+        startActivity(new Intent(BaseActivity.this, DetailProductActivity.class));
+    }
+    public void toSucces(){
+        startActivity(new Intent(BaseActivity.this, SuccsessActivity.class));
+
     }
     public void viewAll(){
         startActivity(new Intent(BaseActivity.this, CategoryActivity.class));
