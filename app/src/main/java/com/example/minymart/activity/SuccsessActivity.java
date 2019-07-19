@@ -83,4 +83,10 @@ public class SuccsessActivity extends BaseActivity {
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        toHome();
+    }
 }

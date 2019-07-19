@@ -3,6 +3,8 @@ package com.example.minymart.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +21,11 @@ import com.example.minymart.R;
 import com.example.minymart.adapter.CategoriesAdapter;
 import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
+import com.example.minymart.connection.ConnectivityReceiver;
 import com.example.minymart.fragment.BannerFragment;
 import com.example.minymart.model.Category;
 import com.example.minymart.model.respons.ResponsCategories;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +35,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnItemClickListener{
+public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnItemClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
 
     //Component
     @BindView(R.id.recycler_home_category)
@@ -40,6 +44,9 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
     TextView mViewAll;
     @BindView(R.id.pb)
     ProgressBar progressBar;
+    @BindView(R.id.constraint)
+    ConstraintLayout mCl;
+
     CategoriesAdapter mAdapter;
     BaseApiService mApiService;
     Context mContext;
@@ -56,7 +63,7 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
 
         attachView(this);
         initView();
-        loadCategories();
+        checkConnection();
         transactionFragment();
 
     }
@@ -71,7 +78,6 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
 
     public void initView(){
 
-        progressBar.setVisibility(View.VISIBLE);
         mApiService = UtilsApi.getApiService();
         mRecyclerviewCategory.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -81,6 +87,12 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
         mAdapter = new CategoriesAdapter(this, mCategory);
         mAdapter.setOnItemClickListener(this);
         mRecyclerviewCategory.setAdapter(mAdapter);
+        if (isOnline()){
+            loadCategories();
+        }
+        else {
+            progressBar.setVisibility(View.GONE);
+        }
 
     }
 
@@ -104,6 +116,7 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
     }
 
     public void loadCategories(){
+        progressBar.setVisibility(View.VISIBLE);
         Call<ResponsCategories> categoriesCall = mApiService.getCategories();
         categoriesCall.enqueue(new Callback<ResponsCategories>() {
             @Override
@@ -118,9 +131,33 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
 
             @Override
             public void onFailure(Call<ResponsCategories> call, Throwable t) {
-
+                progressBar.setVisibility(View.GONE);
             }
         });
+    }
+
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected(this);
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        if (!isConnected) {
+            Snackbar snackbar = Snackbar
+
+                    .make(mCl, "Maaf! Tidak terhubung ke internet", Snackbar.LENGTH_INDEFINITE)
+
+                    .setAction("Coba lagi", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            recreate();
+                        }
+
+                    });
+
+            snackbar.show();
+        }
     }
 
 
@@ -149,5 +186,10 @@ public class HomeActivity extends BaseActivity implements CategoriesAdapter.OnIt
     @Override
     public void onShowItemClick(int position) {
 
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
     }
 }

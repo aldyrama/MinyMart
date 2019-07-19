@@ -46,7 +46,7 @@ public interface BaseApiService {
     Call<ResponsCart> getPay(@Header("Authorization") String tokenBearer);
 
     @GET("profile")
-    Call<ResponsUser> getProfile(@Header("Authorization") String tokenBearer);
+    Call<ResponseBody> getProfile(@Header("Authorization") String tokenBearer);
 
     @GET("promo/banner")
     Call<ResponsBanner> getBanner();

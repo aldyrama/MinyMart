@@ -49,8 +49,6 @@ public class BannerFragment extends BaseFragment {
         mBanner = new ArrayList<>();
         mSlider = view.findViewById(R.id.imageSlider);
         mPb = view.findViewById(R.id.pb);
-        mPb.setVisibility(View.VISIBLE);
-        loadBanner();
         mSliderAdpter = new SliderAdapter(getContext(), mBanner);
         mSlider.setSliderAdapter(mSliderAdpter);
         mSlider.setIndicatorAnimation(IndicatorAnimations.SLIDE);
@@ -59,6 +57,13 @@ public class BannerFragment extends BaseFragment {
         mSlider.setIndicatorSelectedColor(Color.WHITE);
         mSlider.setIndicatorUnselectedColor(Color.GRAY);
         mSlider.startAutoCycle();
+        if (isOnline()){
+            loadBanner();
+        }
+        else {
+
+            mPb.setVisibility(View.GONE);
+        }
 
         mSlider.setOnIndicatorClickListener(new DrawController.ClickListener() {
             @Override
@@ -72,6 +77,7 @@ public class BannerFragment extends BaseFragment {
     }
 
     public void loadBanner(){
+        mPb.setVisibility(View.VISIBLE);
         Call<ResponsBanner> call = mApiService.getBanner();
         call.enqueue(new Callback<ResponsBanner>() {
             @Override
@@ -90,5 +96,7 @@ public class BannerFragment extends BaseFragment {
             }
         });
     }
+
+
 
 }

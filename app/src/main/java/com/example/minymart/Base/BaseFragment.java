@@ -2,7 +2,9 @@ package com.example.minymart.Base;
 
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.view.View;
 
 import butterknife.ButterKnife;
@@ -26,4 +28,13 @@ public class BaseFragment extends Fragment {
         loading.setCancelable(false);
         loading.show();
     }
+
+    public boolean isOnline() {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+
+    }
+
 }

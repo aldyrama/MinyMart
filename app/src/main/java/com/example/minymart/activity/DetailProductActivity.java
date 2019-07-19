@@ -51,7 +51,6 @@ public class DetailProductActivity extends BaseActivity {
         name = i.getExtras().getString("NAME");
         image = i.getExtras().getString("IMAGE");
         description = i.getExtras().getString("DESCRIPTION");
-        Toast.makeText(DetailProductActivity.this, "" + id, Toast.LENGTH_SHORT).show();
         mName.setText(name);
         mDescription.setText(description);
         mQuantity.setText(String.valueOf(mValue));
@@ -61,15 +60,20 @@ public class DetailProductActivity extends BaseActivity {
                 .into(mImage);
     }
 
+    public void insertCart(){
+        toCart();
+    }
+
     public void onClickView(View view){
         switch (view.getId()){
             case R.id.arrow_back :
                 onBackPressed();
                 break;
             case R.id.btn_update_cart :
-                startActivity(new Intent(DetailProductActivity.this, CartActivity.class));
+                insertCart();
+                break;
             case R.id.shop :
-                startActivity(new Intent(DetailProductActivity.this, CartActivity.class));
+                toCart();
                 break;
             case R.id.increase :
                 increaseInteger();

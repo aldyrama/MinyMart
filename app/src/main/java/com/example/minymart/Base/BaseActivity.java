@@ -74,6 +74,7 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(new Intent(BaseActivity.this, SignUpActivity.class));
     }
     public void toHome(){
+
         startActivity(new Intent(BaseActivity.this, HomeActivity.class));
         finish();
     }

@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,9 +20,11 @@ import com.example.minymart.R;
 import com.example.minymart.adapter.CartAdapter;
 import com.example.minymart.apihelper.BaseApiService;
 import com.example.minymart.apihelper.UtilsApi;
+import com.example.minymart.connection.ConnectivityReceiver;
 import com.example.minymart.model.Cart;
 import com.example.minymart.model.respons.ResponsCart;
 import com.example.minymart.utils.SharedPrefManager;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +34,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CartActivity extends BaseActivity {
+public class CartActivity extends BaseActivity implements ConnectivityReceiver.ConnectivityReceiverListener{
 
     @BindView(R.id.recyclerview_cart)
     RecyclerView mRecyclerView;
     @BindView(R.id.txt_total)
     TextView mTotal;
+    @BindView(R.id.constraint)
+    ConstraintLayout mCl;
+
     List<Cart> mCart;
     BaseApiService mApiService;
     LinearLayoutManager layoutManager;
@@ -51,9 +58,8 @@ public class CartActivity extends BaseActivity {
         attachView(this);
         sharedPrefManager = new SharedPrefManager(this);
         token = sharedPrefManager.setToken();
-        showLoading();
         initView();
-        loadCart();
+        checkConnection();
     }
 
     @SuppressLint("WrongConstant")
@@ -66,9 +72,13 @@ public class CartActivity extends BaseActivity {
         mCart = new ArrayList<>();
         mAdapter = new CartAdapter(this, mCart);
         mRecyclerView.setAdapter(mAdapter);
+        if (isOnline()){
+            loadCart();
+        }
     }
 
     public void loadCart() {
+        showLoading();
         Call<ResponsCart> cartCall = mApiService.getCart(token);
         cartCall.enqueue(new Callback<ResponsCart>() {
 
@@ -102,8 +112,37 @@ public class CartActivity extends BaseActivity {
 
     }
 
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected(this);
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        if (!isConnected) {
+            Snackbar snackbar = Snackbar
+
+                    .make(mCl, "Maaf! Tidak terhubung ke internet", Snackbar.LENGTH_INDEFINITE)
+
+                    .setAction("Coba lagi", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            recreate();
+                        }
+
+                    });
+
+            snackbar.show();
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
     }
 }
